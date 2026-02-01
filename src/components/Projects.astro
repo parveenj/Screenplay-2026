@@ -1,10 +1,84 @@
 ---
 import { siteConfig } from "../config";
+
+interface Props {
+  embedInHero?: boolean;
+}
+
+const { embedInHero = false } = Astro.props;
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
 ---
 
 {
-  hasProjects && (
+  hasProjects &&
+  (embedInHero ? (
+    <div class="projects-hero-row flex gap-2 w-[976px] h-[240px]">
+      {siteConfig.projects.map((project, index) => {
+        const Component = project.link ? "a" : "div";
+        const linkProps = project.link
+          ? {
+              href: project.link,
+              target: "_blank",
+              rel: "noopener noreferrer",
+            }
+          : {};
+
+        return (
+          <div class="group relative w-[320px] h-[240px] flex-shrink-0">
+            <Component
+              {...linkProps}
+              class={`block relative h-full overflow-hidden rounded-lg border border-gray-200 transition-all duration-300 ${
+                project.link
+                  ? "hover:shadow-xl hover:border-gray-300 hover:-translate-y-0.5"
+                  : ""
+              }`}
+              style={project.image ? `background-image: url(${project.image}); background-size: cover; background-position: center;` : undefined}
+            >
+              {!project.image && (
+                <div class="absolute inset-0 bg-gray-100" aria-hidden="true" />
+              )}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" aria-hidden="true" />
+              {project.link && (
+                <div class="absolute top-2 right-2 z-10 w-7 h-7 flex items-center justify-center bg-gray-900 rounded-full text-white transition-all duration-300 group-hover:bg-gray-700">
+                  <svg
+                    class="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 17L17 7M17 7H7M17 7V17"
+                    />
+                  </svg>
+                </div>
+              )}
+              <div class="absolute bottom-0 left-0 right-0 p-3 flex flex-col gap-1.5">
+                <h3 class="text-xs font-bold text-white line-clamp-2 leading-tight drop-shadow-sm">
+                  {project.name}
+                </h3>
+                {project.skills && project.skills.length > 0 && (
+                  <div class="flex flex-wrap gap-1">
+                    {project.skills.slice(0, 3).map((skill) => (
+                      <span
+                        class={`px-1.5 py-0.5 bg-white/90 text-gray-900 rounded text-[8px] font-medium transition-all duration-300 ${
+                          project.link ? "group-hover:bg-white" : ""
+                        }`}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Component>
+          </div>
+        );
+      })}
+    </div>
+  ) : (
     <section id="projects" class="p-8 sm:p-12 md:p-16 lg:p-24">
       <div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
@@ -34,14 +108,19 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
                   <div class="group relative">
                     <Component
                       {...linkProps}
-                      class={`block relative p-4 sm:p-6 md:p-8 bg-gray-50 rounded-xl sm:rounded-2xl border border-gray-200 transition-all duration-300 ${
+                      class={`block relative min-h-[280px] sm:min-h-[320px] overflow-hidden rounded-xl sm:rounded-2xl border border-gray-200 transition-all duration-300 ${
                         project.link
-                          ? "hover:bg-white hover:shadow-xl hover:border-gray-300 hover:-translate-y-1"
+                          ? "hover:shadow-xl hover:border-gray-300 hover:-translate-y-1"
                           : ""
                       }`}
+                      style={project.image ? `background-image: url(${project.image}); background-size: cover; background-position: center;` : undefined}
                     >
+                      {!project.image && (
+                        <div class="absolute inset-0 bg-gray-100" aria-hidden="true" />
+                      )}
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" aria-hidden="true" />
                       {project.link && (
-                        <div class="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-gray-900 rounded-full text-white transition-all duration-300 group-hover:bg-gray-700">
+                        <div class="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-10 w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-gray-900 rounded-full text-white transition-all duration-300 group-hover:bg-gray-700">
                           <svg
                             class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                             fill="none"
@@ -57,32 +136,16 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
                           </svg>
                         </div>
                       )}
-
-                      <div class="space-y-4">
-                        <div>
-                          <span
-                            class="text-sm font-mono"
-                            style={{ color: siteConfig.accentColor }}
-                          >
-                            0{index + 1}
-                          </span>
-                          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
-                            {project.name}
-                          </h3>
-                        </div>
-
-                        <p
-                          class={`text-base sm:text-lg text-gray-600 leading-relaxed ${project.link ? "pr-12 sm:pr-14 md:pr-16" : ""}`}
-                        >
-                          {project.description}
-                        </p>
-
+                      <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 flex flex-col gap-2">
+                        <h3 class="text-xl sm:text-2xl font-bold text-white drop-shadow-sm">
+                          {project.name}
+                        </h3>
                         {project.skills && project.skills.length > 0 && (
-                          <div class="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
+                          <div class="flex flex-wrap gap-1.5 sm:gap-2">
                             {project.skills.map((skill) => (
                               <span
-                                class={`px-2.5 sm:px-3 py-1 sm:py-1.5 bg-gray-900 text-white rounded-md sm:rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${
-                                  project.link ? "group-hover:bg-gray-800" : ""
+                                class={`px-2.5 sm:px-3 py-1 sm:py-1.5 bg-white/90 text-gray-900 rounded-md sm:rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${
+                                  project.link ? "group-hover:bg-white" : ""
                                 }`}
                               >
                                 {skill}
@@ -100,5 +163,5 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
         </div>
       </div>
     </section>
-  )
+  ))
 }

@@ -18,6 +18,7 @@ export const siteConfig = {
       description:
         "One concise email. Five minutes. Every Tuesday. Essential AI news & trends, production-ready libraries, powerful AI tools, and real-world code examples",
       link: "https://aidevroundup.com/?ref=devportfolio",
+      image: "/images/project-1.jpg",
       skills: ["React", "Node.js", "AWS"],
     },
     {
@@ -25,6 +26,7 @@ export const siteConfig = {
       description:
         "Master the art of building production-ready, full-stack Chrome Extensions using modern web technologies and best practices",
       link: "https://fullstackextensions.com/?ref=devportfolio",
+      image: "/images/project-2.jpg",
       skills: ["React", "Node.js", "AWS"],
     },
     {
@@ -32,6 +34,7 @@ export const siteConfig = {
       description:
         "Kit to jump-start your Chrome extension projects with a variety of battle-tested starter templates & examples",
       link: "https://extensionkit.io/?ref=devportfolio",
+      image: "/images/project-3.jpg",
       skills: ["React", "Node.js", "AWS"],
     },
   ],

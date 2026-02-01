@@ -2,7 +2,7 @@ MIT License
 
 Copyright (c) 2025 Parveen Jagajeevan
 
-Permission is not granted to any person, unless granted written permission by Parveen Jagajeevan, obtaining a copy of
+Permission is not granted to any person, unless granted written permission by Parveen Jagajeevan, to obtain a copy of
 this software and associated documentation files (the "Software"), to deal in
 the Software without restriction, including without limitation the rights to
 use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of

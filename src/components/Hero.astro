@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from "../config";
+import Projects from "./Projects.astro";
 ---
 
 <div
@@ -150,6 +151,16 @@ import { siteConfig } from "../config";
       </p>
     </div>
   </div>
+  {
+    siteConfig.projects?.length && (
+      <div
+        class="hidden min-[1000px]:block absolute right-[100px] bottom-[100px] z-10 animate-fade-in animation-delay-600"
+        aria-label="Featured projects"
+      >
+        <Projects embedInHero />
+      </div>
+    )
+  }
   <div
     class="absolute bottom-0 left-0 right-0 p-8 sm:p-12 md:p-24 flex gap-x-4 sm:gap-x-6 md:gap-x-8 text-gray-700 animate-fade-in animation-delay-600"
   >
