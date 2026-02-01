@@ -8,3 +8,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 });
+
+export default defineConfig({
+  site: 'https://parveenj.github.io',
+})
