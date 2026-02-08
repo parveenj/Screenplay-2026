@@ -3,15 +3,118 @@ import { siteConfig } from "../config";
 
 interface Props {
   embedInHero?: boolean;
+  /** When true, render 4 cards in a row that control the hero carousel (click to switch hero view) */
+  carouselRow?: boolean;
 }
 
-const { embedInHero = false } = Astro.props;
+const { embedInHero = false, carouselRow = false } = Astro.props;
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
+const carouselProjects = (siteConfig.projects ?? []).slice(0, 4);
 ---
 
 {
   hasProjects &&
-  (embedInHero ? (
+  (carouselRow ? (
+    <div
+      class="projects-carousel-row relative bg-white border-t border-gray-100 max-h-[28vh] min-h-[120px] flex items-center justify-center px-10 py-3 sm:py-4 md:py-5"
+      aria-label="Select project to view"
+    >
+      <div
+        id="project-cards-viewport-wrapper"
+        class="project-cards-viewport-wrapper relative w-[300px] min-[680px]:w-[600px] min-[1280px]:w-[1200px] h-full min-h-[100px]"
+      >
+        <div
+          id="project-cards-viewport"
+          class="overflow-hidden h-full w-full"
+        >
+          <div
+            id="project-cards-track"
+            class="projects-cards-track flex h-full transition-transform duration-300 ease-out w-[1200px]"
+            aria-live="polite"
+          >
+            {carouselProjects.map((project, index) => (
+              <button
+                type="button"
+                class="project-carousel-card group relative w-[300px] flex-shrink-0 min-h-[100px] overflow-hidden rounded-lg border-2 border-gray-200 transition-all duration-300 hover:shadow-lg hover:border-gray-300 hover:-translate-y-0.5 data-[active=true]:border-[var(--accent-color)] data-[active=true]:ring-2 data-[active=true]:ring-[var(--accent-color)]/30 p-1 sm:p-1.5 box-border"
+                data-carousel-index={index}
+                data-active={index === 0}
+                style={`--accent-color: ${siteConfig.accentColor}${project.image ? `; background-image: url(${project.image}); background-size: cover; background-position: center;` : ""}`}
+                aria-pressed={index === 0}
+                aria-label={`Show ${project.name}`}
+              >
+                {!project.image && (
+                  <div class="absolute inset-0 bg-gray-100" aria-hidden="true" />
+                )}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" aria-hidden="true" />
+                <div class="absolute bottom-0 left-0 right-0 p-2 sm:p-3 flex flex-col gap-0.5 sm:gap-1">
+                  <h3 class="text-xs sm:text-sm font-bold text-white line-clamp-2 leading-tight drop-shadow-sm text-left">
+                    {project.name}
+                  </h3>
+                  {project.skills && project.skills.length > 0 && (
+                    <div class="flex flex-wrap gap-0.5 sm:gap-1">
+                      {project.skills.slice(0, 3).map((skill) => (
+                        <span class="px-1 py-0.5 bg-white/90 text-gray-900 rounded text-[7px] sm:text-[8px] font-medium">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div
+          id="project-cards-arrows"
+          class="hidden min-[680px]:flex min-[1280px]:!hidden absolute inset-y-0 left-0 right-0 items-center justify-between pointer-events-none"
+          aria-hidden="true"
+        >
+          <button
+            type="button"
+            id="project-cards-prev"
+            class="pointer-events-auto absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[calc(100%+50px)] w-9 h-9 flex items-center justify-center rounded-full bg-white/95 shadow-md border border-gray-200 text-gray-700 hover:bg-white hover:text-[var(--accent-color)] transition-colors z-10"
+            style={`--accent-color: ${siteConfig.accentColor}`}
+            aria-label="Previous project"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button
+            type="button"
+            id="project-cards-next"
+            class="pointer-events-auto absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+50px)] w-9 h-9 flex items-center justify-center rounded-full bg-white/95 shadow-md border border-gray-200 text-gray-700 hover:bg-white hover:text-[var(--accent-color)] transition-colors z-10"
+            style={`--accent-color: ${siteConfig.accentColor}`}
+            aria-label="Next project"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div
+          id="project-cards-arrows-single"
+          class="flex min-[680px]:hidden absolute inset-y-0 left-0 right-0 items-center justify-between pointer-events-none"
+          aria-hidden="true"
+        >
+          <button
+            type="button"
+            id="project-cards-prev-single"
+            class="pointer-events-auto absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[calc(100%+50px)] w-9 h-9 flex items-center justify-center rounded-full bg-white/95 shadow-md border border-gray-200 text-gray-700 hover:bg-white hover:text-[var(--accent-color)] transition-colors z-10"
+            style={`--accent-color: ${siteConfig.accentColor}`}
+            aria-label="Previous project"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button
+            type="button"
+            id="project-cards-next-single"
+            class="pointer-events-auto absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+50px)] w-9 h-9 flex items-center justify-center rounded-full bg-white/95 shadow-md border border-gray-200 text-gray-700 hover:bg-white hover:text-[var(--accent-color)] transition-colors z-10"
+            style={`--accent-color: ${siteConfig.accentColor}`}
+            aria-label="Next project"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : embedInHero ? (
     <div class="projects-hero-row flex gap-2 w-[976px] h-[240px]">
       {siteConfig.projects.map((project, index) => {
         const Component = project.link ? "a" : "div";

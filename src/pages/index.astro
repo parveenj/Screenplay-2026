@@ -27,14 +27,125 @@ import "../styles/global.css";
   <body>
     <Header />
     <section>
-      <Hero />
-      <About />
-      <div class="min-[1000px]:hidden">
-        <Projects />
+      <div class="hero-and-projects min-h-screen flex flex-col pt-14 md:pt-16">
+        <div class="hero-wrapper flex-1 min-h-0 flex flex-col min-h-0">
+          <Hero />
+        </div>
+        <div id="projects" class="projects-row-wrapper flex-shrink-0">
+          <Projects carouselRow />
+        </div>
       </div>
+      <About />
       <Experience />
       <Education />
     </section>
     <Footer />
+    <script>
+      (function heroAndProjectCarousel() {
+        const hero = document.getElementById("hero-carousel");
+        const cards = document.querySelectorAll(".project-carousel-card");
+        const slides = document.querySelectorAll(".hero-slide");
+        const track = document.getElementById("project-cards-track");
+        const prevBtns = document.querySelectorAll("#project-cards-prev, #project-cards-prev-single");
+        const nextBtns = document.querySelectorAll("#project-cards-next, #project-cards-next-single");
+        if (!hero || !cards.length || !slides.length) return;
+
+        let slideIndex = 0;
+
+        function getCardsPerView(): number {
+          const w = window.innerWidth;
+          if (w >= 1280) return 4;
+          if (w >= 680) return 2;
+          return 1;
+        }
+
+        function getMaxSlideIndex(): number {
+          const perView = getCardsPerView();
+          if (perView >= 4) return 0;
+          if (perView === 2) return 1;
+          return 3;
+        }
+
+        function goTo(index: number) {
+          const i = Math.max(0, Math.min(index, slides.length - 1));
+          hero?.setAttribute("data-active-slide", String(i));
+          slides.forEach((el, j) => {
+            const slide = el as HTMLElement;
+            const isActive = j === i;
+            slide.style.opacity = isActive ? "1" : "0";
+            slide.style.pointerEvents = isActive ? "auto" : "none";
+            slide.setAttribute("aria-hidden", String(!isActive));
+          });
+          cards.forEach((card, j) => {
+            card.setAttribute("data-active", String(j === i));
+            card.setAttribute("aria-pressed", String(j === i));
+          });
+        }
+
+        const CARD_WIDTH_PX = 300;
+
+        function updateTrackTransform() {
+          if (!track) return;
+          const perView = getCardsPerView();
+          const maxIdx = getMaxSlideIndex();
+          slideIndex = Math.min(slideIndex, maxIdx);
+          if (perView >= 4) {
+            (track as HTMLElement).style.transform = "translateX(0)";
+            return;
+          }
+          const offsetPx = perView === 1 ? slideIndex * CARD_WIDTH_PX : slideIndex * 2 * CARD_WIDTH_PX;
+          (track as HTMLElement).style.transform = `translateX(-${offsetPx}px)`;
+        }
+
+        function goPrev() {
+          const maxIdx = getMaxSlideIndex();
+          if (slideIndex <= 0) return;
+          slideIndex--;
+          updateTrackTransform();
+          const perView = getCardsPerView();
+          const firstVisible = perView === 1 ? slideIndex : slideIndex * 2;
+          goTo(firstVisible);
+        }
+
+        function goNext() {
+          const maxIdx = getMaxSlideIndex();
+          if (slideIndex >= maxIdx) return;
+          slideIndex++;
+          updateTrackTransform();
+          const perView = getCardsPerView();
+          const firstVisible = perView === 1 ? slideIndex : slideIndex * 2;
+          goTo(firstVisible);
+        }
+
+        cards.forEach((card, index) => {
+          card.addEventListener("click", () => {
+            const perView = getCardsPerView();
+            if (perView >= 4) {
+              goTo(index);
+              return;
+            }
+            if (perView === 2) {
+              slideIndex = index < 2 ? 0 : 1;
+              updateTrackTransform();
+            } else {
+              slideIndex = index;
+              updateTrackTransform();
+            }
+            goTo(index);
+          });
+        });
+
+        prevBtns.forEach((btn) => btn.addEventListener("click", goPrev));
+        nextBtns.forEach((btn) => btn.addEventListener("click", goNext));
+
+        window.addEventListener("resize", () => {
+          const maxIdx = getMaxSlideIndex();
+          slideIndex = Math.min(slideIndex, maxIdx);
+          updateTrackTransform();
+        });
+
+        updateTrackTransform();
+      })();
+    </script>
   </body>
 </html>

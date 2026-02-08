@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "Parveen Jagajeevan",
-  title: "Staff Product Designer",
+  name: "Screenplay",
+  title: "Screenplay",
   description: "Portfolio website of Parveen Jagajeevan",
   accentColor: "#1d4ed8",
   social: {
@@ -10,19 +10,19 @@ export const siteConfig = {
     letterboxd: "https://letterboxd.com/parveenj/",
   },
   aboutMe:
-    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem quos asperiores nihil consequatur tempore cupiditate architecto natus commodi corrupti quas quasi facere est, dignissimos odit nam veniam sapiente ut, vitae eligendi ipsum dolor, nostrum ullam impedit! Corrupti ratione mollitia temporibus necessitatibus, consectetur reiciendis recusandae id, dolorum quaerat, vero pariatur. Ratione!",
-  skills: ["Javascript", "React", "Node.js", "Python", "AWS", "Docker"],
+    "I am a product designer at Walmart Global Tech, blending years of narrative craft as a novelist and screenwriter into every design. I believe the best digital experiences start with compelling stories and bold, purposeful visuals.",
+  skills: ["Cursor", "AI", "UX", "Design", "CI/CD", "Design Systems", "Figma"],
   projects: [
     {
-      name: "AI Dev Roundup Newsletter",
+      name: "About Parveen",
       description:
-        "One concise email. Five minutes. Every Tuesday. Essential AI news & trends, production-ready libraries, powerful AI tools, and real-world code examples",
-      link: "https://aidevroundup.com/?ref=devportfolio",
+        "I am a product designer at Walmart Global Tech, blending years of narrative craft as a novelist and screenwriter into every design. I believe the best digital experiences start with compelling stories and bold, purposeful visuals.",
+      link: "",
       image: "/images/project-1.jpg",
-      skills: ["React", "Node.js", "AWS"],
+      skills: ["UX", "Design", "Figma"],
     },
     {
-      name: "Chrome Extension Mastery: Build Full-Stack Extensions with React & Node.js",
+      name: "Developer Community Portal",
       description:
         "Master the art of building production-ready, full-stack Chrome Extensions using modern web technologies and best practices",
       link: "https://fullstackextensions.com/?ref=devportfolio",
@@ -30,19 +30,27 @@ export const siteConfig = {
       skills: ["React", "Node.js", "AWS"],
     },
     {
-      name: "ExtensionKit",
+      name: "CI/CD Pipeline",
       description:
         "Kit to jump-start your Chrome extension projects with a variety of battle-tested starter templates & examples",
       link: "https://extensionkit.io/?ref=devportfolio",
       image: "/images/project-3.jpg",
       skills: ["React", "Node.js", "AWS"],
     },
+    {
+      name: "Design Systems",
+      description:
+        "Scalable design tokens and component libraries for consistent product experiences",
+      link: "",
+      image: "/images/project-4.jpg",
+      skills: ["Figma", "Design Tokens", "Documentation"],
+    },
   ],
   experience: [
     {
-      company: "Tech Company",
-      title: "Senior Software Engineer",
-      dateRange: "Jan 2022 - Present",
+      company: "Walmart Global Tech",
+      title: "Staff Designer",
+      dateRange: "Oct 2021 - Present",
       bullets: [
         "Led development of microservices architecture serving 1M+ users",
         "Reduced API response times by 40% through optimization",
@@ -50,9 +58,9 @@ export const siteConfig = {
       ],
     },
     {
-      company: "Startup Inc",
-      title: "Full Stack Developer",
-      dateRange: "Jun 2020 - Dec 2021",
+      company: "Slalom Consulting",
+      title: "Principal Designer",
+      dateRange: "Mar 2017 - Oct 2021",
       bullets: [
         "Built and launched MVP product from scratch using React and Node.js",
         "Implemented CI/CD pipeline reducing deployment time by 60%",
@@ -60,9 +68,9 @@ export const siteConfig = {
       ],
     },
     {
-      company: "Digital Agency",
-      title: "Frontend Developer",
-      dateRange: "Aug 2018 - May 2020",
+      company: "Rune",
+      title: "Head of Design",
+      dateRange: "Oct 2016 - Mar 2017",
       bullets: [
         "Developed responsive web applications for 20+ clients",
         "Improved site performance scores by 35% on average",
